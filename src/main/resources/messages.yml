@@ -1,0 +1,23 @@
+crate:
+  won: "&2&l» &a&lCRATE &fYou won §a%item_name%"
+  lost: "&4&l» &c&lCRATE &fYou won... &7nothing"
+edit:
+  chance:
+    message: "&2&l» &a&lCRATE &fYou set the chance to &a%chance%"
+    title: "&a&lINSERT PERCENTAGE"
+    subtitle: "&fType &ecancel &fto cancel this action"
+give:
+  gave: "&2&l» &a&lCRATE &fYou gave a crate &a%crate% &fto &a%player%"
+  took: "&2&l» &a&lCRATE &fYou received a new crate &a%crate%"
+errors:
+  unknown-command: "&4&l» &c&lERROR &7Unknown command"
+  console-disallowed: "&4&l» &c&lERROR &7Use this command as a &fplayer"
+  permission-denied: "&4&l» &c&lERROR &7You don't have &fpermission"
+  offline-player: "&4&l» &c&lERROR &7Could not find &f%player%"
+  daily-max-reached: "&4&l» &c&lERROR &7You reached the &fmax amount &7of crates for today!"
+  open-delay: "&4&l» &c&lERROR &7Wait &f%seconds%s &7to open another crate!"
+  crate-already-exist: "&4&l» &c&lERROR &7This crate already &fexist&7!"
+  crate-doesnt-exist: "&4&l» &c&lERROR &7Crate &f%crate% &7doesn't exist&7!"
+  no-item: "&4&l» &c&lERROR &7You must &fhold an item&7!"
+  already-editing: "&4&l» &c&lERROR &7You are already editing crate &f%crate%&7, write &fcancel &7to cancel the editing"
+  invalid-chance: "&4&l» &c&lERROR &7Specify a valid &fchance&7!"

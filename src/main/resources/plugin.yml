@@ -1,0 +1,12 @@
+name: ${project.name}
+author: Lolok
+version: ${project.version}
+api-version: "1.16"
+main: me.lolok.crates.CratesPlugin
+softdepend:
+  - "PlaceholderAPI"
+commands:
+  crates:
+    description: "Main command"
+    aliases:
+      - "crate"
