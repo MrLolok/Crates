@@ -5,9 +5,9 @@ import me.lolok.crates.crates.crate.ICrateService;
 import me.lolok.crates.crates.crate.objects.DefaultCrate;
 import me.lolok.crates.crates.crate.objects.Crate;
 import me.lolok.crates.database.subscribers.OperationSubscriber;
-import me.lolok.crates.items.ItemParser;
-import me.lolok.crates.items.objects.DefaultCrateItem;
-import me.lolok.crates.items.objects.CrateItem;
+import me.lolok.crates.items.ItemSerializer;
+import me.lolok.crates.crates.crate.prizes.DefaultCratePrize;
+import me.lolok.crates.crates.crate.prizes.CratePrize;
 import org.bson.Document;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,9 +22,9 @@ public class CratesLoadingSubscriber extends OperationSubscriber<Document> {
     @Override
     public void onNext(Document value) {
         String name = value.getString("name");
-        ItemStack item = ItemParser.fromJSON(value.getString("item"));
-        Set<CrateItem> prizes = new LinkedList<>(value.getList("prizes", Document.class)).stream()
-                .map(document -> new DefaultCrateItem(ItemParser.fromJSON(document.getString("item")), document.getDouble("chance")))
+        ItemStack item = ItemSerializer.fromJSON(value.getString("item"));
+        Set<CratePrize> prizes = new LinkedList<>(value.getList("prizes", Document.class)).stream()
+                .map(document -> new DefaultCratePrize(ItemSerializer.fromJSON(document.getString("item")), document.getDouble("chance")))
                 .collect(Collectors.toSet());
 
         Crate crate = new DefaultCrate(service, name, item, prizes);

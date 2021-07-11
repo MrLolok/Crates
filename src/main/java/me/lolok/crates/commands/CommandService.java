@@ -1,40 +1,46 @@
 package me.lolok.crates.commands;
 
 import lombok.Getter;
+import me.lolok.crates.CratesPlugin;
 import me.lolok.crates.commands.subcommands.*;
 import me.lolok.crates.configurations.messages.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Class for managing subcommands.
- */
-public class CommandManager implements CommandExecutor, TabExecutor {
+public class CommandService implements ICommandService {
+    private final CratesPlugin plugin;
+
     @Getter
     private final Map<String, Subcommand> commands = new LinkedHashMap<>();
 
-    public CommandManager() {
-        initialize();
+    public CommandService(CratesPlugin plugin) {
+        this.plugin = plugin;
     }
 
-    private void initialize() {
+    public void enable() {
+        plugin.getCommand("crates").setExecutor(plugin);
         register("help", new HelpCommand(this));
         register("create", new CreateCommand());
         register("delete", new DeleteCommand());
         register("edit", new EditCommand());
         register("give", new GiveCommand());
+        register("list", new ListCommand());
     }
 
-    public void register(String command, Subcommand subcommand) {
-        commands.put(command.toLowerCase(), subcommand);
+    @Override
+    public void disable() {
+
+    }
+
+    @Override
+    public void register(String name, Subcommand subcommand) {
+        commands.put(name.toLowerCase(), subcommand);
     }
 
     @Override

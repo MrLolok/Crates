@@ -3,9 +3,8 @@ package me.lolok.crates.crates.crate.objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.lolok.crates.CratesPlugin;
 import me.lolok.crates.crates.crate.ICrateService;
-import me.lolok.crates.items.objects.CrateItem;
+import me.lolok.crates.crates.crate.prizes.CratePrize;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,28 +24,28 @@ public class DefaultCrate implements Crate {
     protected final ItemStack item;
 
     @Getter
-    protected Set<CrateItem> prizes = new HashSet<>();
+    protected Set<CratePrize> prizes = new HashSet<>();
 
     @Override
-    public void addPrize(CrateItem item) {
-        prizes.add(item);
+    public void addPrize(CratePrize prize) {
+        prizes.add(prize);
         service.save(this);
     }
 
     @Override
-    public void removePrize(CrateItem item) {
-        prizes.remove(item);
+    public void removePrize(CratePrize prize) {
+        prizes.remove(prize);
         service.save(this);
     }
 
     @Override @Nullable
-    public ItemStack getRandomPrize() {
+    public CratePrize getRandomPrize() {
         double chance = new Random().nextDouble() * 100D;
         double cumulative = 0.0;
-        for (CrateItem prize : prizes) {
+        for (CratePrize prize : prizes) {
             cumulative += prize.getChance();
             if (chance < cumulative)
-                return prize.getItem();
+                return prize;
         }
 
         return null;

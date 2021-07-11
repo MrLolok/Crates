@@ -9,6 +9,7 @@ import org.reactivestreams.Subscriber;
 import java.util.concurrent.CompletableFuture;
 
 public interface IMongoDBManager {
+
     <T> MongoCollection<T> getCollection(String name, Class<T> type);
 
     MongoCollection<Document> getCollection(String name);
@@ -26,4 +27,5 @@ public interface IMongoDBManager {
     MongoDatabase getDatabase();
 
     void loadCollection(String name, Subscriber<? super Document> subscriber);
+
 }

@@ -8,6 +8,12 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.InvocationTargetException;
 
 public class NBTUtils {
+
+    /**
+     * Convert a normal {@link ItemStack} to an NMS ItemStack
+     * @param item to convert
+     * @return NMS ItemStack
+     */
     @Nullable
     public static Object getNMSItemStack(ItemStack item) {
         try {
@@ -17,6 +23,11 @@ public class NBTUtils {
         }
     }
 
+    /**
+     * Convert an NMS ItemStack to a normal {@link ItemStack}
+     * @param NMSItem to convert
+     * @return Bukkit's ItemStack
+     */
     @Nullable
     public static ItemStack getBukkitItemStack(Object NMSItem) {
         try {
@@ -26,6 +37,10 @@ public class NBTUtils {
         }
     }
 
+    /**
+     * Create a new NBTTagCompound
+     * @return a new compound
+     */
     private static Object newNBTCompound() {
         try {
             return ReflectionsUtils.getNMSClass("NBTTagCompound").newInstance();
@@ -34,6 +49,12 @@ public class NBTUtils {
         }
     }
 
+    /**
+     * Check if an {@link ItemStack} has an NBTTagCompound by getting
+     * his NMS version and checking if has a tag on it
+     * @param item to check
+     * @return true if has a tag on it
+     */
     private static boolean hasNBTCompound(ItemStack item) {
         Object NMSItem = getNMSItemStack(item);
         Preconditions.checkNotNull(NMSItem, "NMS ItemStack is null");
@@ -45,6 +66,13 @@ public class NBTUtils {
         }
     }
 
+    /**
+     * Gets the NBTTagCompound from an {@link ItemStack} by getting his NMS
+     * version and getting the tag from it.
+     * If the item has no tag return a new compound invoking {@link NBTUtils#newNBTCompound()}
+     * @param item to get the tag from
+     * @return compound found
+     */
     @Nullable
     protected static Object getTagCompound(ItemStack item) {
         Object NMSItem = getNMSItemStack(item);
@@ -57,6 +85,14 @@ public class NBTUtils {
         }
     }
 
+    /**
+     * Sets an NBTTagCompound to an {@link ItemStack} by getting his NMS
+     * version and setting the tag on it
+     * @param item to edit
+     * @param compound to set
+     * @return item with the new compound
+     */
+    @Nullable
     protected static ItemStack setNBTCompound(ItemStack item, Object compound) {
         Object NMSItem = getNMSItemStack(item);
         Preconditions.checkNotNull(NMSItem, "NMS ItemStack is null");
@@ -69,4 +105,5 @@ public class NBTUtils {
 
         return getBukkitItemStack(NMSItem);
     }
+
 }

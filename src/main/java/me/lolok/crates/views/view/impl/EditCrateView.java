@@ -4,8 +4,8 @@ import me.lolok.crates.CratesPlugin;
 import me.lolok.crates.configurations.messages.Message;
 import me.lolok.crates.crates.crate.ICrateService;
 import me.lolok.crates.crates.crate.objects.Crate;
-import me.lolok.crates.items.objects.CrateItem;
-import me.lolok.crates.items.objects.DefaultCrateItem;
+import me.lolok.crates.crates.crate.prizes.CratePrize;
+import me.lolok.crates.crates.crate.prizes.DefaultCratePrize;
 import me.lolok.crates.views.components.Button;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,13 +20,13 @@ public class EditCrateView extends View {
 
     public EditCrateView(Crate crate) {
         super(String.format("§l» §8Editing crate %s", crate.getName()), Math.max(1, (int) Math.ceil(crate.getPrizes().size() / 9D)));
-        setDragListener((event, view) -> crate.addPrize(new DefaultCrateItem(event.getOldCursor())));
+        setDragListener((event, view) -> crate.addPrize(new DefaultCratePrize(event.getOldCursor())));
         loadPrizes(crate);
     }
 
     private void loadPrizes(Crate crate) {
         int slot = 0;
-        for (CrateItem prize : crate.getPrizes()) {
+        for (CratePrize prize : crate.getPrizes()) {
             ItemStack item = prize.getItem();
             ItemMeta meta = item.getItemMeta();
             List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();

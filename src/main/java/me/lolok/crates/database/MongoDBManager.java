@@ -1,6 +1,5 @@
 package me.lolok.crates.database;
 
-import com.mongodb.MongoClientSettings;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
@@ -12,33 +11,25 @@ import me.lolok.crates.database.connector.IMongoDBConnector;
 import me.lolok.crates.database.connector.MongoDBConnector;
 import me.lolok.crates.database.subscribers.ExistSubscriber;
 import me.lolok.crates.database.subscribers.ObservableSubscriber;
-import me.lolok.crates.database.subscribers.impl.CratesLoadingSubscriber;
 import org.bson.Document;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
-@Getter
 public class MongoDBManager implements IMongoDBManager {
     private final Executor executor = (command) -> Bukkit.getScheduler().runTaskAsynchronously(CratesPlugin.getInstance(), command);
+
+    @Getter
     private MongoClient client;
+
+    @Getter
     private MongoDatabase database;
 
     public MongoDBManager(DatabaseConfiguration configuration) {
         IMongoDBConnector connector = new MongoDBConnector(configuration);
-        initialize(connector);
-    }
-
-    public MongoDBManager(MongoClientSettings settings, String database) {
-        IMongoDBConnector connector = new MongoDBConnector(settings, database);
-        initialize(connector);
-    }
-
-    public MongoDBManager(IMongoDBConnector connector) {
         initialize(connector);
     }
 
@@ -94,22 +85,21 @@ public class MongoDBManager implements IMongoDBManager {
                 return;
             }
 
-            if (!exists) {
-                Publisher<Void> publisher = database.createCollection(name);
-                publisher.subscribe(subscriber);
-            }
+            if (!exists)
+                database.createCollection(name).subscribe(subscriber);
         });
     }
 
     @Override
     public void loadCollection(String name, Subscriber<? super Document> subscriber) {
-        collectionExist(name).whenComplete((exist, e) -> {
+        collectionExist(name).whenComplete((exists, e) -> {
             if (e != null) {
                 e.printStackTrace();
                 return;
             }
 
-            MongoCollection<Document> collection = exist ? getCollection(name) : createCollectionAndGet(name);
+            System.out.println(name + " " + exists);
+            MongoCollection<Document> collection = exists ? getCollection(name) : createCollectionAndGet(name);
             collection.find().subscribe(subscriber);
         });
     }

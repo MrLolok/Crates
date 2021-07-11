@@ -1,15 +1,15 @@
 package me.lolok.crates.configurations.files;
 
 import lombok.Getter;
-import me.lolok.crates.configurations.IConfigurationFileHandler;
+import me.lolok.crates.configurations.IConfigurationService;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 @Getter
-public class DatabaseConfiguration extends ConfigurationFile {
+public class DatabaseConfiguration extends Configuration {
     private String host, database, user, password;
     private int port;
 
-    public DatabaseConfiguration(IConfigurationFileHandler handler) {
+    public DatabaseConfiguration(IConfigurationService handler) {
         super(handler, "database", true);
     }
 

@@ -1,5 +1,5 @@
 crate:
-  won: "&2&l» &a&lCRATE &fYou won §a%item_name%"
+  won: "&2&l» &a&lCRATE &fYou won §a%item_name% &fwith a chance of &a%item_chance%"
   lost: "&4&l» &c&lCRATE &fYou won... &7nothing"
 edit:
   chance:
@@ -9,6 +9,14 @@ edit:
 give:
   gave: "&2&l» &a&lCRATE &fYou gave a crate &a%crate% &fto &a%player%"
   took: "&2&l» &a&lCRATE &fYou received a new crate &a%crate%"
+list:
+  header: "§6§l» §eCrates §8[§f%page%§8/§f%max_pages%§8]"
+  entry:
+    text: "&8- &f%crate%"
+    hover: "§6§l» §eGet this crate"
+  next-button:
+    text: "&e&lNEXT &6&l»"
+    hover: "&6&l» &eChange the page"
 errors:
   unknown-command: "&4&l» &c&lERROR &7Unknown command"
   console-disallowed: "&4&l» &c&lERROR &7Use this command as a &fplayer"
@@ -21,3 +29,4 @@ errors:
   no-item: "&4&l» &c&lERROR &7You must &fhold an item&7!"
   already-editing: "&4&l» &c&lERROR &7You are already editing crate &f%crate%&7, write &fcancel &7to cancel the editing"
   invalid-chance: "&4&l» &c&lERROR &7Specify a valid &fchance&7!"
+  invalid-page: "&4&l» &c&lERROR &7There are only &f%max_pages% &7pages!"

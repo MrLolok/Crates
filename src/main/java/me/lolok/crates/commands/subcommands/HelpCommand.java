@@ -2,7 +2,7 @@ package me.lolok.crates.commands.subcommands;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import me.lolok.crates.commands.CommandManager;
+import me.lolok.crates.commands.ICommandService;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 public class HelpCommand implements Subcommand {
-    private final CommandManager commandManager;
+    private final ICommandService commandManager;
 
     @Getter
     private final String description = "Show commands list";

@@ -8,7 +8,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class ItemParser {
+/**
+ * This is a class utils to parse or serialize {@link ItemStack} to/from JSON.
+ * It's used to serialize and store items of crates to MongoDB
+ */
+public class ItemSerializer {
+
+    /**
+     * Serialize an {@link ItemStack} to JSON
+     * @param item to serialize
+     * @return JSON string
+     */
     @Nullable
     public static String toJSON(ItemStack item) {
         Object NMSItem = NBTUtils.getNMSItemStack(item);
@@ -23,6 +33,11 @@ public class ItemParser {
         }
     }
 
+    /**
+     * Parse an {@link ItemStack} from JSON
+     * @param json to parse
+     * @return item parsed
+     */
     @Nullable
     public static ItemStack fromJSON(String json) {
         try {
@@ -34,4 +49,5 @@ public class ItemParser {
             throw new RuntimeException("Cannot parse the ItemStack from JSON", e);
         }
     }
+
 }

@@ -1,14 +1,14 @@
 package me.lolok.crates.configurations.files;
 
 import lombok.Getter;
-import me.lolok.crates.configurations.IConfigurationFileHandler;
+import me.lolok.crates.configurations.IConfigurationService;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class MessagesConfiguration extends ConfigurationFile {
+public class MessagesConfiguration extends Configuration {
     @Getter
     private YamlConfiguration configuration;
 
-    public MessagesConfiguration(IConfigurationFileHandler handler) {
+    public MessagesConfiguration(IConfigurationService handler) {
         super(handler, "messages", true);
     }
 

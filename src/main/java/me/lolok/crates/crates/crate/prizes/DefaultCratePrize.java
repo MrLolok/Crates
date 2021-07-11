@@ -1,11 +1,11 @@
-package me.lolok.crates.items.objects;
+package me.lolok.crates.crates.crate.prizes;
 
 import lombok.*;
 import org.bukkit.inventory.ItemStack;
 
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class DefaultCrateItem implements CrateItem {
+public class DefaultCratePrize implements CratePrize {
     @Getter
     private final ItemStack item;
 

@@ -1,9 +1,10 @@
 package me.lolok.crates;
 
 import lombok.Getter;
-import me.lolok.crates.commands.CommandManager;
-import me.lolok.crates.configurations.ConfigurationFileHandler;
-import me.lolok.crates.configurations.IConfigurationFileHandler;
+import me.lolok.crates.commands.CommandService;
+import me.lolok.crates.commands.ICommandService;
+import me.lolok.crates.configurations.ConfigurationService;
+import me.lolok.crates.configurations.IConfigurationService;
 import me.lolok.crates.configurations.files.DatabaseConfiguration;
 import me.lolok.crates.crates.crate.CrateService;
 import me.lolok.crates.crates.crate.ICrateService;
@@ -13,8 +14,6 @@ import me.lolok.crates.views.listeners.ViewDispatcherListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Objects;
-
 public final class CratesPlugin extends JavaPlugin {
     @Getter private static CratesPlugin instance;
 
@@ -22,7 +21,7 @@ public final class CratesPlugin extends JavaPlugin {
     private IMongoDBManager mongoDBManager;
 
     @Getter
-    private IConfigurationFileHandler configurationFileHandler;
+    private IConfigurationService configurationService;
 
     @Getter
     private ICrateService crateService;
@@ -38,18 +37,20 @@ public final class CratesPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Initialize the configuration file handler
-        this.configurationFileHandler = new ConfigurationFileHandler(this);
+        // Initialize and enable the configuration file handler
+        configurationService = new ConfigurationService(this);
+        configurationService.enable();
 
         // Initialize the MongoDB manager
-        this.mongoDBManager = new MongoDBManager(new DatabaseConfiguration(configurationFileHandler));
+        mongoDBManager = new MongoDBManager((DatabaseConfiguration) configurationService.getConfiguration("database"));
 
-        // Initialize the crate service
-        this.crateService = new CrateService(this);
+        // Initialize and enable the crate service
+        crateService = new CrateService(this);
+        crateService.enable();
 
         // Register commands
-        CommandManager commandManager = new CommandManager();
-        Objects.requireNonNull(getCommand("crates")).setExecutor(commandManager);
+        ICommandService commandService = new CommandService(this);
+        commandService.enable();
 
         // Register view dispatcher listener
         getServer().getPluginManager().registerEvents(new ViewDispatcherListener(), this);
@@ -57,5 +58,10 @@ public final class CratesPlugin extends JavaPlugin {
         // Plugin enabled successful
         Bukkit.getConsoleSender().sendMessage("§a| Plugin: " + getDescription().getName());
         Bukkit.getConsoleSender().sendMessage("§a| Version: " + getDescription().getVersion());
+    }
+
+    @Override
+    public void onDisable() {
+        crateService.disable();
     }
 }

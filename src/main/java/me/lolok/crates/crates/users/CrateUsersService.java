@@ -2,6 +2,7 @@ package me.lolok.crates.crates.users;
 
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
+import com.mongodb.client.model.Updates;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import lombok.Getter;
 import me.lolok.crates.CratesPlugin;
@@ -72,9 +73,9 @@ public class CrateUsersService implements ICrateUsersService {
     }
 
     @Override
-    public void clear() {
-        users.clear();
-        plugin.getMongoDBManager().getCollection("users").deleteMany(new Document()).subscribe(new ObservableSubscriber<>());
-        Bukkit.getLogger().info("Users cache cleared");
+    public void resetOpened() {
+        users.forEach(user -> user.setOpened(0));
+        plugin.getMongoDBManager().getCollection("users").updateMany(new Document(), Updates.set("opened", 0));
+        Bukkit.getLogger().info("Opened crates cleared");
     }
 }

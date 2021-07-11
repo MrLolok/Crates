@@ -17,7 +17,7 @@ public class EditCommand implements Subcommand {
     private final ICrateService service = CratesPlugin.getInstance().getCrateService();
 
     @Getter
-    private final String description = "Delete a crate", permissions = "crates.admin.edit", arguments = "<name>";
+    private final String description = "Edit prizes and chances of a crate", permissions = "crates.admin.edit", arguments = "<name>";
 
     @Getter
     private final boolean allowedConsole = false;

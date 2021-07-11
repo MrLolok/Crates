@@ -16,6 +16,6 @@ public class UsersClearTask extends BukkitRunnable {
     public void run() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         if (DATE_FORMAT.format(timestamp).equals("00:00:00"))
-            service.clear();
+            service.resetOpened();
     }
 }

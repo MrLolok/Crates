@@ -1,6 +1,6 @@
 package me.lolok.crates.crates.crate.objects;
 
-import me.lolok.crates.items.objects.CrateItem;
+import me.lolok.crates.crates.crate.prizes.CratePrize;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,16 +8,44 @@ import java.util.Set;
 
 public interface Crate {
 
+    /**
+     * Gets the name of this crate
+     * @return name of the crate
+     */
     String getName();
 
+    /**
+     * Gets the item that represents this crate
+     * @return item to open this crate
+     */
     ItemStack getItem();
 
-    Set<CrateItem> getPrizes();
+    /**
+     * Gets all {@link CratePrize} that could be
+     * found opening this crate
+     * @return a set of {@link CratePrize}
+     */
+    Set<CratePrize> getPrizes();
 
-    void addPrize(CrateItem item);
+    /**
+     * Add a {@link CratePrize} to this crate
+     * and update the prizes collection on mongo
+     * @param prize to add
+     */
+    void addPrize(CratePrize prize);
 
-    void removePrize(CrateItem item);
+    /**
+     * Remove a {@link CratePrize} from this crate
+     * and update the prizes collection on mongo
+     * @param prize to remove
+     */
+    void removePrize(CratePrize prize);
 
-    @Nullable ItemStack getRandomPrize();
+    /**
+     * Extract a random {@link CratePrize} from this
+     * crate. The prize could be null if the sum of
+     * the chances of prizes doesn't reach 100%
+     */
+    @Nullable CratePrize getRandomPrize();
 
 }
