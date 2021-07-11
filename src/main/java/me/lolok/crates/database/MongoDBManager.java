@@ -1,6 +1,5 @@
 package me.lolok.crates.database;
 
-import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoCollection;
 import com.mongodb.reactivestreams.client.MongoDatabase;
 import lombok.Getter;
@@ -23,9 +22,6 @@ public class MongoDBManager implements IMongoDBManager {
     private final Executor executor = (command) -> Bukkit.getScheduler().runTaskAsynchronously(CratesPlugin.getInstance(), command);
 
     @Getter
-    private MongoClient client;
-
-    @Getter
     private MongoDatabase database;
 
     public MongoDBManager(DatabaseConfiguration configuration) {
@@ -34,7 +30,6 @@ public class MongoDBManager implements IMongoDBManager {
     }
 
     private void initialize(IMongoDBConnector connector) {
-        this.client = connector.getClient();
         this.database = connector.getDatabase();
     }
 
@@ -98,7 +93,6 @@ public class MongoDBManager implements IMongoDBManager {
                 return;
             }
 
-            System.out.println(name + " " + exists);
             MongoCollection<Document> collection = exists ? getCollection(name) : createCollectionAndGet(name);
             collection.find().subscribe(subscriber);
         });
