@@ -13,22 +13,20 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 public enum Message {
+    EMPTY_PRIZE("crate.emtpy-prize"),
     CRATE_WON("crate.won"),
     CRATE_LOST("crate.lost"),
-
     EDIT_CHANCE_MESSAGE("edit.chance.message"),
     EDIT_CHANCE_TITLE("edit.chance.title"),
     EDIT_CHANCE_SUBTITLE("edit.chance.subtitle"),
-
+    ANIMATION_SET("animation.set"),
     GAVE("give.gave"),
     TOOK("give.took"),
-
     LIST_HEADER("list.header"),
     LIST_ENTRY_TEXT("list.entry.text"),
     LIST_ENTRY_HOVER("list.entry.hover"),
     LIST_NEXT_BUTTON_TEXT("list.next-button.text"),
     LIST_NEXT_BUTTON_HOVER("list.next-button.hover"),
-
     UNKNOWN_COMMAND("errors.unknown-command"),
     CONSOLE_DISALLOWED("errors.console-disallowed"),
     PERMISSION_DENIED("errors.permission-denied"),

@@ -29,6 +29,7 @@ public class CommandService implements ICommandService {
         register("create", new CreateCommand());
         register("delete", new DeleteCommand());
         register("edit", new EditCommand());
+        register("setAnimation", new SetAnimationCommand());
         register("give", new GiveCommand());
         register("list", new ListCommand());
     }

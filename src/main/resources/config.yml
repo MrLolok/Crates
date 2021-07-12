@@ -1,4 +1,5 @@
 opening:
+  default-animation: "GLASSES_ROTATION"
   max-per-day: 5
   delay: 10 #In seconds
 animation:

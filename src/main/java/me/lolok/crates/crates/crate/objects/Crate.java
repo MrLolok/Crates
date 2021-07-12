@@ -1,5 +1,6 @@
 package me.lolok.crates.crates.crate.objects;
 
+import me.lolok.crates.crates.crate.animations.AnimationType;
 import me.lolok.crates.crates.crate.prizes.CratePrize;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -21,11 +22,25 @@ public interface Crate {
     ItemStack getItem();
 
     /**
+     * Gets the animation type used to
+     * display an animation on opening phase
+     * @return animation identifier
+     */
+    AnimationType getAnimationType();
+
+    /**
      * Gets all {@link CratePrize} that could be
      * found opening this crate
      * @return a set of {@link CratePrize}
      */
     Set<CratePrize> getPrizes();
+
+    /**
+     * Update the {@link AnimationType} of this crate
+     * and edit the crate on mongo
+     * @param type to set
+     */
+    void setAnimationType(AnimationType type);
 
     /**
      * Add a {@link CratePrize} to this crate

@@ -1,6 +1,7 @@
 package me.lolok.crates;
 
 import lombok.Getter;
+import me.lolok.crates.API.CratesAPI;
 import me.lolok.crates.commands.CommandService;
 import me.lolok.crates.commands.ICommandService;
 import me.lolok.crates.configurations.ConfigurationService;
@@ -12,9 +13,10 @@ import me.lolok.crates.database.IMongoDBManager;
 import me.lolok.crates.database.MongoDBManager;
 import me.lolok.crates.views.listeners.ViewDispatcherListener;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class CratesPlugin extends JavaPlugin {
+public final class CratesPlugin extends JavaPlugin implements CratesAPI {
     @Getter private static CratesPlugin instance;
 
     @Getter
@@ -54,6 +56,9 @@ public final class CratesPlugin extends JavaPlugin {
 
         // Register view dispatcher listener
         getServer().getPluginManager().registerEvents(new ViewDispatcherListener(), this);
+
+        // Register a new service to provide APIs
+        getServer().getServicesManager().register(CratesAPI.class, this, this, ServicePriority.Highest);
 
         // Plugin enabled successful
         Bukkit.getConsoleSender().sendMessage("§a| Plugin: " + getDescription().getName());

@@ -3,6 +3,7 @@ package me.lolok.crates.crates.crate;
 import me.lolok.crates.CratesPlugin;
 import me.lolok.crates.crates.Service;
 import me.lolok.crates.crates.crate.animations.Animation;
+import me.lolok.crates.crates.crate.animations.AnimationType;
 import me.lolok.crates.crates.crate.objects.Crate;
 import me.lolok.crates.crates.users.ICrateUsersService;
 import me.lolok.crates.crates.crate.prizes.CratePrize;
@@ -25,6 +26,13 @@ public interface ICrateService extends Service {
      * another one
      */
     int DELAY = CratesPlugin.getInstance().getConfig().getInt("opening.delay");
+
+    /**
+     * Gets the default {@link AnimationType} of crates
+     * from config.yml
+     * @return default animation type
+     */
+    AnimationType getDefaultAnimationType();
 
     /**
      * Gets the service that manage {@link me.lolok.crates.crates.users.objects.CrateUser}
@@ -68,6 +76,14 @@ public interface ICrateService extends Service {
      * @param animation to display to the player
      */
     void open(Crate crate, Player player, Animation animation);
+
+    /**
+     * Open a {@link Crate} to a player
+     * @param crate to open
+     * @param player that open the crate
+     * @see ICrateService#open(Crate, Player, Animation)
+     */
+    void open(Crate crate, Player player);
 
     /**
      * Create a new {@link Crate}

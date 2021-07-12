@@ -2,6 +2,7 @@ package me.lolok.crates.database.subscribers.impl;
 
 import lombok.RequiredArgsConstructor;
 import me.lolok.crates.crates.crate.ICrateService;
+import me.lolok.crates.crates.crate.animations.AnimationType;
 import me.lolok.crates.crates.crate.objects.DefaultCrate;
 import me.lolok.crates.crates.crate.objects.Crate;
 import me.lolok.crates.database.subscribers.OperationSubscriber;
@@ -23,11 +24,12 @@ public class CratesLoadingSubscriber extends OperationSubscriber<Document> {
     public void onNext(Document value) {
         String name = value.getString("name");
         ItemStack item = ItemSerializer.fromJSON(value.getString("item"));
+        AnimationType animationType = AnimationType.valueOf(value.getString("animation"));
         Set<CratePrize> prizes = new LinkedList<>(value.getList("prizes", Document.class)).stream()
                 .map(document -> new DefaultCratePrize(ItemSerializer.fromJSON(document.getString("item")), document.getDouble("chance")))
                 .collect(Collectors.toSet());
 
-        Crate crate = new DefaultCrate(service, name, item, prizes);
+        Crate crate = new DefaultCrate(service, name, item, animationType, prizes);
         service.addCrate(crate);
     }
 }

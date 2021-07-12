@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import me.lolok.crates.CratesPlugin;
 import me.lolok.crates.configurations.messages.Message;
 import me.lolok.crates.crates.crate.objects.Crate;
+import me.lolok.crates.crates.crate.prizes.CratePrize;
 import me.lolok.crates.items.builder.ItemBuilder;
 import me.lolok.crates.views.view.IView;
 import me.lolok.crates.views.view.impl.View;
@@ -19,40 +20,35 @@ import java.util.Objects;
 import java.util.Random;
 
 public class GlassesRotationAnimation extends Animation {
+    private CratePrize prize;
     private BukkitTask task;
 
-    public GlassesRotationAnimation(Crate crate) {
-        super(crate);
+    public GlassesRotationAnimation() {
+        super("GlassesRotation");
     }
 
     @Override
-    public void start(Player player) {
+    public void start(Crate crate, Player player) {
         IView view = new View(String.format("§l» §8Opening crate %s...", crate.getName()), 5);
         // Skip animation
         view.setCloseListener((event, gui) -> end(player));
 
-        this.task = new OpeningTask(view, prize.getItem()).runTaskTimerAsynchronously(CratesPlugin.getInstance(), 0L, ANIMATION_SPEED);
+        this.prize = crate.getRandomPrize();
+        this.task = new OpeningTask(view).runTaskTimerAsynchronously(CratesPlugin.getInstance(), 0L, ANIMATION_SPEED);
     }
 
-    @Override
-    public void end(Player player) {
+    private void end(Player player) {
         if (task != null) {
             if (task.isCancelled()) return;
             task.cancel();
         }
 
-        Message message = prize == null ? Message.CRATE_LOST : Message.CRATE_WON;
-        message.send(player, "item_name", prize != null ? prize.getItem().getItemMeta().hasDisplayName() ? prize.getItem().getItemMeta().getDisplayName() : prize.getItem().getType().name() : "Nothing", "item_chance", prize != null ? String.valueOf(prize.getChance()) : "");
-        player.playSound(player.getLocation(), Objects.requireNonNull(XSound.ENTITY_PLAYER_LEVELUP.parseSound()), 1F, 2F);
-
-        if (prize != null)
-            player.getInventory().addItem(prize.getItem());
+        sendPrize(prize, player);
     }
 
     @RequiredArgsConstructor
     public class OpeningTask extends BukkitRunnable {
         private final IView view;
-        private final ItemStack prize;
         private int index = 0;
 
         @Override
@@ -62,7 +58,7 @@ public class GlassesRotationAnimation extends Animation {
                 return;
             }
 
-            ItemStack item = prize == null ? new ItemBuilder().material(XMaterial.BARRIER.parseMaterial()).name("§cNothing").build() : prize;
+            ItemStack item = prize == null ? new ItemBuilder().material(XMaterial.BARRIER.parseMaterial()).name(Message.EMPTY_PRIZE.getMessage()).build() : prize.getItem();
             view.getContentHandler().setItem(22, item);
 
             Bukkit.getScheduler().runTaskLater(CratesPlugin.getInstance(), () -> view.getViewer().closeInventory(), 60L);

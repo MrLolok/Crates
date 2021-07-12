@@ -1,6 +1,9 @@
 crate:
-  won: "&2&l» &a&lCRATE &fYou won §a%item_name% &fwith a chance of &a%item_chance%"
+  empty_prize: "&cNothing"
+  won: "&2&l» &a&lCRATE &fYou won &a%item_name% &fwith a chance of &a%item_chance%"
   lost: "&4&l» &c&lCRATE &fYou won... &7nothing"
+animation:
+  set: "&4&l» &c&lCRATE &fAnimation type changed to &a%animation% &ffor crate &a%crate%"
 edit:
   chance:
     message: "&2&l» &a&lCRATE &fYou set the chance to &a%chance%"
@@ -10,10 +13,10 @@ give:
   gave: "&2&l» &a&lCRATE &fYou gave a crate &a%crate% &fto &a%player%"
   took: "&2&l» &a&lCRATE &fYou received a new crate &a%crate%"
 list:
-  header: "§6§l» §eCrates §8[§f%page%§8/§f%max_pages%§8]"
+  header: "&6&l» &eCrates &8[&f%page%&8/&f%max_pages%&8]"
   entry:
     text: "&8- &f%crate%"
-    hover: "§6§l» §eGet this crate"
+    hover: "&6&l» &eGet this crate"
   next-button:
     text: "&e&lNEXT &6&l»"
     hover: "&6&l» &eChange the page"

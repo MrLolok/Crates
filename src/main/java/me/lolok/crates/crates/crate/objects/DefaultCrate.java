@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.lolok.crates.crates.crate.ICrateService;
+import me.lolok.crates.crates.crate.animations.AnimationType;
 import me.lolok.crates.crates.crate.prizes.CratePrize;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +25,16 @@ public class DefaultCrate implements Crate {
     protected final ItemStack item;
 
     @Getter
+    protected AnimationType animationType;
+
+    @Getter
     protected Set<CratePrize> prizes = new HashSet<>();
+
+    @Override
+    public void setAnimationType(AnimationType type) {
+        this.animationType = type;
+        service.save(this);
+    }
 
     @Override
     public void addPrize(CratePrize prize) {

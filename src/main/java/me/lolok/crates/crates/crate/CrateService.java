@@ -6,6 +6,7 @@ import com.mongodb.reactivestreams.client.MongoCollection;
 import lombok.Getter;
 import me.lolok.crates.CratesPlugin;
 import me.lolok.crates.crates.crate.animations.Animation;
+import me.lolok.crates.crates.crate.animations.AnimationType;
 import me.lolok.crates.crates.crate.listeners.CrateChatListener;
 import me.lolok.crates.crates.crate.listeners.CrateInteractListener;
 import me.lolok.crates.crates.crate.objects.DefaultCrate;
@@ -39,6 +40,9 @@ public class CrateService implements ICrateService {
     private final CrateInteractListener interactListener = new CrateInteractListener(this);
     private final CrateChatListener chatListener = new CrateChatListener(this);
 
+    @Getter
+    private AnimationType defaultAnimationType;
+
     public CrateService(CratesPlugin plugin) {
         this.plugin = plugin;
         this.usersService = new CrateUsersService(plugin);
@@ -55,6 +59,12 @@ public class CrateService implements ICrateService {
         // Register crates listeners
         Bukkit.getServer().getPluginManager().registerEvents(interactListener, plugin);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, plugin);
+
+        try {
+            defaultAnimationType = AnimationType.valueOf(plugin.getConfig().getString("opening.default-animation"));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("Unknown default animation type", e);
+        }
     }
 
     @Override
@@ -90,14 +100,19 @@ public class CrateService implements ICrateService {
     public void open(Crate crate, Player player, Animation animation) {
         usersService.open(player.getUniqueId());
         player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-        animation.start(player);
+        animation.start(crate, player);
+    }
+
+    @Override
+    public void open(Crate crate, Player player) {
+        open(crate, player, crate.getAnimationType().getAnimation());
     }
 
     @Override
     public void create(String name, ItemStack item) {
         item.setAmount(1);
         item = WrappedCompound.of(item).setString("Crate", name).save(item);
-        Crate crate = new DefaultCrate(this, name, item);
+        Crate crate = new DefaultCrate(this, name, item, defaultAnimationType);
         addCrate(crate);
         save(crate);
     }
@@ -122,6 +137,7 @@ public class CrateService implements ICrateService {
         Document document = new Document();
         document.put("name", crate.getName());
         document.put("item", ItemSerializer.toJSON(crate.getItem()));
+        document.put("animation", crate.getAnimationType().name());
         document.put("prizes", prizes);
 
         MongoCollection<Document> collection = plugin.getMongoDBManager().getCollection("crates");
